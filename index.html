@@ -6,19 +6,19 @@
     <title>CutAway - Background Remover</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background: url('https://i.imgur.com/fFuFBD3.jpeg') no-repeat center center fixed; /* Add your image URL here */
-        background-size: cover; /* Ensures the image covers the entire background */
-        color: #333;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://i.imgur.com/fFuFBD3.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
 
         header {
             background-color: #0056e0;
             color: white;
-            padding: 10px 20px;
+            padding: 5px 10px;
             text-align: center;
         }
 
@@ -64,17 +64,17 @@
         .progress-bar {
             width: 100%;
             background-color: #ccc;
-            margin: 20px 0;
+            margin: 18px 0;
             display: none;
         }
 
         .progress-bar-inner {
-            height: 20px;
+            height: 10px;
             width: 0;
             background-color: #0056e0;
         }
 
-        /* Contact Section */
+             /* Contact Section */
         .contact {
             background-color: none;
             padding: 20px 10px;
@@ -98,7 +98,7 @@
             text-decoration: underline;
         }
 
-        /* Footer */
+
         footer {
             background-color: #333;
             text-align: center;
@@ -137,7 +137,7 @@
         <p>Email us at <a href="mailto:support@cutaway.com">hassanadvice908@gmail.com</a></p>
         <p>Call us: +1 (400) 685-1234</p>
     </div>
-
+    
     <footer>
         <p>&copy; 2025 CutAway. All Rights Reserved.</p>
     </footer>
@@ -200,48 +200,20 @@
                 const blob = await response.blob();
                 const imageUrl = URL.createObjectURL(blob);
 
-                const originalImage = await createImage(file);
-                const bgRemovedImage = await createImage(blob);
-
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-
-                canvas.width = originalImage.width;
-                canvas.height = originalImage.height;
-
-                // Apply a white background or replace this with any color/image
-                ctx.fillStyle = "#ffffff";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.drawImage(bgRemovedImage, 0, 0, canvas.width, canvas.height);
-
-                const finalImageUrl = canvas.toDataURL("image/png");
-
-                processedImage.src = finalImageUrl;
+                processedImage.src = imageUrl;
                 processedImage.style.display = "block";
                 downloadBtn.style.display = "block";
 
                 downloadBtn.addEventListener("click", () => {
                     const link = document.createElement("a");
-                    link.href = finalImageUrl;
-                    link.download = file.name.replace(/\.[^/.]+$/, "-with-background.png");
+                    link.href = imageUrl;
+                    link.download = file.name.replace(/\.[^/.]+$/, "-bg-removed.png");
                     link.click();
                 });
             } catch (error) {
                 console.error("Error removing background:", error);
                 alert("An error occurred while processing your image.");
             }
-        }
-
-        function createImage(file) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                const url = typeof file === "string" ? file : URL.createObjectURL(file);
-
-                img.onload = () => resolve(img);
-                img.onerror = reject;
-                img.src = url;
-            });
         }
     </script>
 </body>
