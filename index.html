@@ -6,13 +6,17 @@
     <title>CutAway - Background Remover</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
+       
         body {
             font-family: Arial, sans-serif;
             margin: 0;
+            height: 100%;
             padding: 0;
+            flex-direction: column;
+            text-align: center;
             background: url('https://i.imgur.com/fFuFBD3.jpeg') no-repeat center center fixed;
             background-size: cover;
-            color: #333;
+           color: #333;
         }
 
         header {
@@ -21,21 +25,27 @@
             padding: 5px 10px;
             text-align: center;
         }
+    
+     header, footer {
+    width: 100%;
+    text-align: center;
+}
 
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            text-align: center;
-        }
+        .container, .contact {
+    width: 100%;
+    max-width: 800px; /* Keeps it centered and limits width */
+    margin: auto; /* Ensures it remains centered */
+}
 
         .drag-area {
-            border: 2px dashed #ccc;
-            border-radius: 10px;
-            padding: 30px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
+    display: flex;
+     border: 2px dashed #ccc;
+     border-radius: 10px;
+      padding: 30px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 
         .drag-area:hover {
             background-color: blueviolet;
@@ -74,30 +84,56 @@
             background-color: #0056e0;
         }
 
-             /* Contact Section */
-        .contact {
-            background-color: none;
-            padding: 20px 10px;
-            text-align: center;
-        }
+            /* Updated Contact Section */
+.contact {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    margin: 40px auto;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .contact h2 {
-            margin-bottom: 15px;
-        }
+.contact h2 {
+    margin-bottom: 20px;
+    color: #0056e0;
+}
 
-        .contact p {
-            margin: 5px 0;
-        }
+.contact form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-        .contact a {
-            color: #0056e0;
-            text-decoration: none;
-        }
+.contact input,
+.contact textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
 
-        .contact a:hover {
-            text-decoration: underline;
-        }
+.contact textarea {
+    resize: vertical;
+}
 
+.contact button {
+    background-color: #0056e0;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.contact button:hover {
+    background-color: #0041b3;
+}
 
         footer {
             background-color: #333;
@@ -131,12 +167,15 @@
         <button id="downloadBtn" style="display: none;">Download</button>
     </div>
 
-    <div class="contact">
-        <h2>Contact Us</h2>
-        <p>Have questions or need help?</p>
-        <p>Email us at <a href="mailto:support@cutaway.com">hassanadvice908@gmail.com</a></p>
-        <p>Call us: +1 (400) 685-1234</p>
-    </div>
+ <section id="contact" class="contact">
+  <h2>Contact Us</h2>
+  <form action="https://submit-form.com/qsWcFcGOc" method="POST">
+    <input type="text" name="full-name" placeholder="Enter Full Name" required>
+    <input type="email" name="email" placeholder="Your Gmail Address" required>
+    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+    <button type="submit">Submit</button>
+  </form>
+</section>
     
     <footer>
         <p>&copy; 2025 CutAway. All Rights Reserved.</p>
