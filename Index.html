@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stories Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #8b4513;
+            z-index: 1000;
+            transition: width 0.3s;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.97);
+            padding: 1rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #8b4513;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            color: #8b4513;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #8b4513;
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                        url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content {
+            animation: fadeIn 1s ease-out;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Featured Stories Section */
+        .stories {
+            padding: 5rem 1rem;
+            background: linear-gradient(135deg, #f9f5f0 0%, #fff 100%);
+        }
+
+        .stories-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .story-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .story-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .story-content {
+            padding: 2rem;
+        }
+
+        .story-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #8b4513;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .story-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .story-excerpt {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: #8b4513;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: #6b3410;
+        }
+
+        /* Featured Books */
+        .featured {
+            padding: 5rem 1rem;
+            background: #fff;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #8b4513;
+        }
+
+        .books-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .book-content {
+            padding: 1.5rem;
+        }
+
+        .book-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .book-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Learning Section */
+        .learning {
+            padding: 5rem 1rem;
+            background: #f9f5f0;
+        }
+
+        .learning-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .learning-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .learning-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #8b4513;
+        }
+
+        .learning-card ul {
+            list-style-position: inside;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Artwork Section */
+        .artwork {
+            padding: 5rem 1rem;
+            background: #fff;
+        }
+
+        .art-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .art-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+
+        .art-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .art-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .art-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .art-card:hover .art-overlay {
+            transform: translateY(0);
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 1rem;
+            background: #f9f5f0;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 1rem;
+            background: #333;
+            color: white;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 5px;
+            background: #444;
+            color: white;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 1rem;
+            background: #8b4513;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .contact-form button:hover {
+            background: #6b3410;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: 1rem;
+                flex-direction: column;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .story-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">BookHub</a>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="#home">Home</a>
+                <a href="#stories">Stories</a>
+                <a href="#featured">Books</a>
+                <a href="#learning">Learning</a>
+                <a href="#artwork">Artwork</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Discover the Magic of Stories</h1>
+            <p>Explore our curated collection of books, learning resources, and artistic inspirations. Begin your journey into the world of imagination and knowledge.</p>
+        </div>
+    </section>
+
+    <section id="stories" class="stories">
+        <h2 class="section-title">Featured Stories</h2>
+        <div class="stories-grid">
+            <div class="story-card">
+                <span class="story-tag">Fantasy</span>
+                <img src="https://images.unsplash.com/photo-1518709766631-a6a7f45921c3" alt="The Last Dragon" class="story-image">
+                <div class="story-content">
+                    <h3 class="story-title">The Last Dragon</h3>
+                    <p class="story-excerpt">In a world where dragons were thought to be extinct, young Sarah discovers a mysterious egg in the ancient forests of the North. As the last guardian of dragon lore, she must protect it from those who would destroy the last hope of dragonkind...</p>
+                    <a href="#" class="read-more">Continue Reading →</a>
+                </div>
+            </div>
+            <div class="story-card">
+                <span class="story-tag">Mystery</span>
+                <img src="https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d" alt="The Midnight Library" class="story-image">
+                <div class="story-content">
+                    <h3 class="story-title">The Midnight Library</h3>
+                    <p class="story-excerpt">Every night at midnight, the old library on Maple Street comes alive. Books float off shelves, whispers echo through the halls, and librarian James Anderson begins his investigation into the supernatural events that only he can witness...</p>
+                    <a href="#" class="read-more">Continue Reading →</a>
+                </div>
+            </div>
+            <div class="story-card">
+                <span class="story-tag">Adventure</span>
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401" alt="Beyond the Horizon" class="story-image">
+                <div class="story-content">
+                    <h3 class="story-title">Beyond the Horizon</h3>
+                    <p class="story-excerpt">When Captain Maria Rodriguez discovers an ancient map leading to a legendary lost city, she assembles a crew of unlikely heroes. Together, they must navigate treacherous waters, face mythical creatures, and uncover secrets that could change history...</p>
+                    <a href="#" class="read-more">Continue Reading →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="featured" class="featured">
+        <h2 class="section-title">Featured Books</h2>
+        <div class="books-grid">
+            <div class="book-card">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f" alt="Book 1">
+                <div class="book-content">
+                    <h3>The Art of Storytelling</h3>
+                    <p>Discover the secrets behind crafting compelling narratives that captivate readers.</p>
+                </div>
+            </div>
+            <div class="book-card">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794" alt="Book 2">
+                <div class="book-content">
+                    <h3>Creative Writing</h3>
+                    <p>Learn the fundamentals of creative writing and develop your unique voice.</p>
+                </div>
+            </div>
+            <div class="book-card">
+                <img src="https://images.unsplash.com/photo-1589998059171-988d887df646" alt="Book 3">
+                <div class="book-content">
+                    <h3>World Literature</h3>
+                    <p>Explore diverse stories from different cultures and perspectives around the globe.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="learning" class="learning">
+        <h2 class="section-title">Learning Resources</h2>
+        <div class="learning-grid">
+            <div class="learning-card">
+                <h3>Writing Workshops</h3>
+                <ul>
+                    <li>Character Development</li>
+                    <li>Plot Structure</li>
+                    <li>Dialogue Writing</li>
+                    <li>World Building</li>
+                </ul>
+            </div>
+            <div class="learning-card">
+                <h3>Online Courses</h3>
+                <ul>
+                    <li>Creative Writing 101</li>
+                    <li>Poetry Fundamentals</li>
+                    <li>Novel Writing</li>
+                    <li>Literary Analysis</li>
+                </ul>
+            </div>
+            <div class="learning-card">
+                <h3>Writing Tools</h3>
+                <ul>
+                    <li>Story Planning Templates</li>
+                    <li>Character Sheets</li>
+                    <li>Writing Prompts</li>
+                    <li>Editing Guidelines</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="artwork" class="artwork">
+        <h2 class="section-title">Artistic Inspiration</h2>
+        <div class="art-grid">
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f" alt="Art 1">
+                <div class="art-overlay">
+                    <h3>Visual Storytelling</h3>
+                    <p>Where art meets narrative</p>
+                </div>
+            </div>
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1499892477393-f675706cbe6e" alt="Art 2">
+                <div class="art-overlay">
+                    <h3>Book Illustrations</h3>
+                    <p>Bringing stories to life</p>
+                </div>
+            </div>
+            <div class="art-card">
+                <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b" alt="Art 3">
+                <div class="art-overlay">
+                    <h3>Creative Expressions</h3>
+                    <p>Art-inspired writing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2 class="section-title">About Us</h2>
+        <div class="about-content">
+            <p>We are passionate about bringing together the worlds of literature, learning, and artistic expression. Our platform serves as a hub for writers, readers, and artists to explore, learn, and grow together.</p>
+            <p>Through our carefully curated collection of books, comprehensive learning resources, and inspiring artwork, we aim to nurture creativity and foster a love for storytelling in all its forms.</p>
+            <p>Join our community of creative minds and embark on a journey of literary and artistic discovery.</p>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2 class="section-title">Get in Touch</h2>
+        <div class="contact-container">
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea rows="4" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        // Progress bar animation
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        };
+
+        // Hamburger menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
